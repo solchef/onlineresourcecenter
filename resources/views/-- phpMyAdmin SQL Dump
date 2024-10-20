@@ -1,0 +1,74 @@
+-- phpMyAdmin SQL Dump
+-- version 4.7.4
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1:3307
+-- Generation Time: Oct 05, 2017 at 06:48 PM
+-- Server version: 10.1.26-MariaDB
+-- PHP Version: 7.1.9
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Database: `pestmatic`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tblreports`
+--
+
+CREATE TABLE `tblreports` (
+  `id` int(10) NOT NULL,
+  `user_id` int(10) NOT NULL,
+  `job_id` int(10) NOT NULL,
+  `report_description` text NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `status` int(20) NOT NULL,
+  `summary` text NOT NULL,
+  `approx_cost` varchar(200) NOT NULL,
+  `product_id` int(200) NOT NULL,
+  `operation_date` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tblreports`
+--
+
+INSERT INTO `tblreports` (`id`, `user_id`, `job_id`, `report_description`, `created_at`, `status`, `summary`, `approx_cost`, `product_id`, `operation_date`) VALUES
+(1, 2, 3, 'good', '2017-10-05 16:47:50', 1, 'xzcjhvs', '100', 1, '2017-09-28 16:49:17');
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `tblreports`
+--
+ALTER TABLE `tblreports`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `tblreports`
+--
+ALTER TABLE `tblreports`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
