@@ -96,7 +96,7 @@
                     <img alt="image" class="img-circle" src="spiniastuff/img/logo.png" />
 
                 </div>
-                <h3>Register to Pestmatic</h3>
+                <h3>Online Resource Center</h3>
                <!--  <p>Create account to see it in action.</p> -->
                     <form class="m-t" method="POST" role="form" action="{{ route('register') }}">
                         {{ csrf_field() }}
@@ -139,7 +139,7 @@
                     <p class="text-muted text-center"><small>Already have an account?</small></p>
                     <a class="btn btn-sm btn-white btn-block" href="{{URL::to('/login')}}">Login</a>
                 </form>
-                <p class="m-t"> <small>Pestmatic is an company based in Nairobi &copy; 2017</small> </p>
+                <p class="m-t"> <small>ORC is an company based in Nairobi &copy; 2024</small> </p>
             </div>
         </div>
 

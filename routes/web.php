@@ -124,6 +124,9 @@ Route::get('/addadmin','HomeController@addadmin');
 Route::post('/createadmin','HomeController@createadmin');
 Route::get('/manageadmin','HomeController@manageadmin');
 Route::get('/manageusers','HomeController@manageusers')->name('manageusers');
+Route::get('/ajax.manageusers','HomeController@ajaxManageUsers')->name('ajax.manageusers');
+
+// Route::get('/ajax/manageusers', [HomeController::class, 'ajaxManageUsers'])->name('ajax.manageusers');
 Route::get('/graduatestudents','HomeController@graduatestudents');
 Route::get('/updateprofile/{id}','HomeController@updateprofile');
 Route::get('/deletestudent/{id}','HomeController@deletestudent');

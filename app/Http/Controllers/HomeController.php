@@ -1900,6 +1900,59 @@ public function updatestudent(Request $request){
     }
 
 
+    public function ajaxManageUsers(Request $request)
+{
+    $this->setLocale();
+    $campus = $request->input('campus');
+    $faculty = $request->input('faculty');
+    $course = $request->input('course');
+    $studentname = $request->input('student');
+    $regdate = $request->input('regdate');
+
+    $query = DB::table('users')
+        ->leftJoin('students', 'students.user_id', 'users.id')
+        ->leftJoin('roles', 'role_id', 'roleid')
+        ->leftJoin('courses', 'courses.id', 'users.course')
+        ->leftJoin('campuses', 'campuses.id', 'users.campusid')
+        ->select('users.*', 'campuses.campusname', 'courses.course_name')
+        ->where('roleid', 3)
+        ->where('completion', 1);
+
+    // Apply filters based on request
+    if ($studentname) {
+        $query->where('users.name', 'like', '%' . $studentname . '%');
+    }
+
+    if ($regdate) {
+        $query->whereDate('students.created_at', '>=', $regdate);
+    }
+
+    if ($campus) {
+        $query->where('users.campusid', $campus);
+    }
+
+    if ($faculty) {
+        $query->where('courses.field_id', $faculty);
+    }
+
+    if ($course) {
+        $query->where('users.course', $course);
+    }
+
+    // Handle pagination
+    $users = $query->paginate($request->input('length', 10));
+    
+    // Format the data for DataTables
+    return response()->json([
+        'draw' => intval($request->input('draw')),
+        'recordsTotal' => $users->total(),
+        'recordsFiltered' => $users->total(),
+        'data' => $users->items(),
+    ]);
+}
+
+
+
     public function getlist(){
 
        $data = NewRequest::All();

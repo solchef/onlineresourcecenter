@@ -451,7 +451,7 @@ new Chart(document.getElementById("bar-chart-grouped"), {
     <script src="{{ asset('spiniastuff/js/plugins/sparkline/jquery.sparkline.min.js') }}"></script>
 
     <!-- Sparkline demo data  -->
-    <script src="{{ asset('spiniastuff/js/demo/sparkline-demo.js') }}"></script>
+    {{-- <script src="{{ asset('spiniastuff/js/demo/sparkline-demo.js') }}"></script> --}}
      <!--<script src="dist/sweetalert.min.js"></script> -->
         <script src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
 
