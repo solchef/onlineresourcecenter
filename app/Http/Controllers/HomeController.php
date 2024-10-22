@@ -605,25 +605,40 @@ class HomeController extends Controller
         return redirect()->back();
     }
 
-//student notes
+    //student notes
     public function studentnotes(){
-      $this->setLocale();
+        $this->setLocale();
 
-         $units = DB::table('course_units')
-         ->where('course_id',Auth::user()->course)
-         ->get();
+        $units = DB::table('course_units')
+            ->where('course_id', Auth::user()->course)
+            ->get();
 
-         // dd($units);
-          $coursedata =  DB::table('courses')->where('id',Auth::user()->course)->first();
+        $coursedata = DB::table('courses')->where('id', Auth::user()->course)->first();
 
-          $coursenotes = DB::table('course_notes')->where('enrolled_course',Auth::user()->course)->get();
+        $payable = Auth::user()->payable;
+        $paid = Auth::user()->paid;
 
-          $today = Carbon::now()->toDateTimeString();
+        $payment_percentage = ($paid / $payable) * 100;
 
-          // dd($coursedata);
+        $coursenotes = DB::table('course_notes')->where('enrolled_course', Auth::user()->course)->get();
 
-         return view('adminviews.studentnotes',compact('coursenotes','today','coursedata'));
+        $total_notes = count($coursenotes); 
+        $threshold_per_note = 100 / $total_notes; 
+
+        foreach ($coursenotes as $key => $note) {
+            $unlock_threshold = ($key + 1) * $threshold_per_note;
+            if ($payment_percentage >= $unlock_threshold) {
+                $note->status = 'unlocked';
+            } else {
+                $note->status = 'locked';
+            }
+        }
+
+        $today = Carbon::now()->toDateTimeString();
+
+        return view('adminviews.studentnotes', compact('coursenotes', 'today', 'coursedata'));
     }
+
 
 
     public function notesnavigation(){

@@ -23,18 +23,27 @@
                                                 <button style="width:100%; text-align:left;"
                                                     value="{{ asset('briefs') }}/{{ $coursedata->course_brief }}"
                                                     id="course_notes" class="btn-full btn btn-xs btn-success">
-                                                    {{ '1. ' }}Course
+                                                    Course
                                                     Brief</button>
                                             </div>
-                                            @php($count = 2)
+                                            @php($count = 1)
                                             @foreach ($coursenotes as $nts)
-                                                <div>
+                                                <div style="display:flex; flex-direction:row; ">
+
                                                     <button style="width:100%; text-align:left;"
                                                         value="{{ asset('coursenotes') }}/{{ $nts->notes }}"
                                                         id="course_notes" class="btn-full btn btn-xs btn-primary">
+                                                        <span>
+                                                            @if ($nts->status === 'unlocked')
+                                                                <i class="fa fa-unlock"></i>
+                                                            @else
+                                                                <i style="margin-right:3px;" class="fa fa-lock"></i>
+                                                            @endif
+                                                        </span>
                                                         {{ $count }}
                                                         {{ '. ' }} {{ $nts->notes }}
-                                                        </button>
+
+                                                    </button>
                                                 </div>
                                                 @php($count++)
                                             @endforeach
@@ -80,6 +89,44 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal for locked notes -->
+    <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="paymentModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+            <!-- Added modal-sm for a smaller modal -->
+            <div class="modal-content">
+                <div class="modal-header bg-warning text-white">
+                   
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body text-center">
+                    <!-- Warning icon in the center -->
+                    <div style="font-size: 36px; color: #ffc107; margin-bottom: 10px;">
+                        <i class="fa fa-exclamation-circle"></i>
+                    </div>
+
+                    <!-- Warning message -->
+                    <p><strong>You need to make additional payments to unlock this module.</strong></p>
+
+                    <!-- Payment details (small text) -->
+                    <p style="font-size: 14px;">
+                        <strong>Total Payable:</strong> € {{ Auth::user()->payable }} <br>
+                        <strong>Total Paid:</strong> € {{ Auth::user()->balance }} <br>
+                        <strong>Remaining Balance:</strong> € {{ Auth::user()->payable - Auth::user()->balance }}
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                    <!-- Smaller button -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.3.122/pdf.min.js"></script>
 
@@ -130,12 +177,26 @@
             // Event listener for clicking a course note button
             $(document).on('click', '#course_notes', function() {
                 const url = $(this).val(); // Get the URL from the button's value attribute
-                if (url) {
+                /** if (url) {
+                    $('#download-link').attr('href', url); // Set the download link to the selected PDF URL
+                    loadPdf(url); // Load the clicked PDF
+                } else {
+                    console.error("No URL found for the selected PDF.");
+                } **/
+
+                const isLocked = $(this).find('i.fa-lock').length > 0; // Check if the note is locked
+
+                if (isLocked) {
+                    // If the note is locked, show the payment modal
+                    $('#paymentModal').modal('show');
+                } else if (url) {
+                    // If unlocked, load the PDF
                     $('#download-link').attr('href', url); // Set the download link to the selected PDF URL
                     loadPdf(url); // Load the clicked PDF
                 } else {
                     console.error("No URL found for the selected PDF.");
                 }
+
             });
 
             // Navigate to the previous page
