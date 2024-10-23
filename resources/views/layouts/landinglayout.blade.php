@@ -38,7 +38,7 @@
 					<li><a href="#about">About</a></li>
 					<li><a href="#courses">Courses</a></li>
 
-					<li><a href="/user-login">Portal Login</a></li>
+					<li><a href="/public/login">Portal Login</a></li>
 
 				</ul>
 			</div>
@@ -155,15 +155,8 @@
 						</div>
 					</div>
 				</a>
-			
-		
+
 			</div>
-
-			
-			
-			
-
-
 		</div>
 	</div>
 
@@ -256,7 +249,7 @@
 								{{-- <a href="#">Home</a> | 
 								<a href="#">About</a> | --}}
 							
-								<a href="/user-login">Portal Login</a>
+								<a href="/public/login">Portal Login</a>
 							</p>
 						</div>
 					</div>
