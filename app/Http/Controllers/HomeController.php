@@ -2050,6 +2050,8 @@ public function updatestudent(Request $request){
         $regdate = $request->input('regdate');
         $completion = $request->input('completion');
 
+        // dd($completion);
+
 
         $response = new StreamedResponse(function() use ($campus, $faculty, $course, $studentname, $regdate, $completion) {
             $handle = fopen('php://output', 'w');
@@ -2082,7 +2084,7 @@ public function updatestudent(Request $request){
                 $query->wheredate('users.created_at', '>=', $regdate);
             }
             if ($completion) {
-                $query->wheredate('users.completion', '>=', $completion);
+                $query->where('users.completion', $completion);
             }
 
             // Fetch filtered users
