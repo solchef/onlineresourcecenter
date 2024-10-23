@@ -62,7 +62,8 @@ Route::get('/goback','inventoryController@goback')->name('goback');
 Route::get('/blank', 'SettingsController@index');
 Route::get('/resetpassadmin', 'SettingsController@resetpassadmin');
 Route::post('/resetpass','SettingsController@resetpassword');
-Route::get('/exportdata','HomeController@exportdata');
+Route::post('/exportdata','HomeController@exportdata');
+// Route::post('exportdata', [HomeController::class, 'exportdata'])->name('exportdata');
 
 Route::get('addfaculties','HomeController@addfaculties');
 Route::post('createfaculty','HomeController@createfaculty');

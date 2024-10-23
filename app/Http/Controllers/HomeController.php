@@ -1993,30 +1993,103 @@ public function updatestudent(Request $request){
       return Response::json($courses);
     }
 
-        public function exportdata(){
-        $response = new StreamedResponse(function(){
-            // Open output stream
+    // public function exportdata(Request $request){
+    //     dd($request->all());
+    //     $response = new StreamedResponse(function(){
+    //         // Open output stream
+    //         $handle = fopen('php://output', 'w');
+
+    //         // Add CSV headers
+    //         fputcsv($handle, [
+    //             'name',
+    //             'mobile',
+    //             'email',
+    //             'balance',
+    //             'Campus',
+    //             'Course Enrolled'
+    //         ]);
+
+    //         // Get all users
+    //         $users = DB::table('users')
+    //                 ->leftjoin('courses','courses.id','users.course')
+    //                 ->leftjoin('campuses','campuses.id','users.campusid')
+    //                 ->where('roleid',3)
+    //                 ->where('completion',1)
+    //                 // ->select('users.name','users.mobile','users.mobile','campuses.campusname','courses.course_name','users.created_at')
+    //                 ->get();
+    //         foreach ($users as $user) {
+    //             // Add a new row with data
+    //             fputcsv($handle, [
+    //                 $user->name,
+    //                 $user->mobile,
+    //                 $user->email,
+    //                 $user->balance,
+    //                 $user->campusname,
+    //                 $user->course_name
+    //             ]);
+    //         }
+
+    //         // Close the output stream
+    //         fclose($handle);
+    //     }, 200, [
+    //             'Content-Type' => 'text/csv',
+    //             'Content-Disposition' => 'attachment; filename="export.csv"',
+    //         ]);
+
+    //     return $response;
+    //     return redirect()->back();
+    
+    // }
+
+    public function exportdata(Request $request){
+
+        $campus = $request->input('campus');
+        $faculty = $request->input('faculty');
+        $course = $request->input('course');
+        $studentname = $request->input('student');
+        $regdate = $request->input('regdate');
+        $completion = $request->input('completion');
+
+
+        $response = new StreamedResponse(function() use ($campus, $faculty, $course, $studentname, $regdate, $completion) {
             $handle = fopen('php://output', 'w');
+        // dd($completion);
 
             // Add CSV headers
-            fputcsv($handle, [
-                'name',
-                'mobile',
-                'email',
-                'balance',
-                'Campus',
-                'Course Enrolled'
-            ]);
+            fputcsv($handle, ['name', 'mobile', 'email', 'balance', 'Campus', 'Course Enrolled']);
 
-            // Get all users
-            $users = DB::table('users')
-                    ->leftjoin('courses','courses.id','users.course')
-                    ->leftjoin('campuses','campuses.id','users.campusid')
-                    ->where('roleid',3)
-                    // ->select('users.name','users.mobile','users.mobile','campuses.campusname','courses.course_name','users.created_at')
-            ->get();
+            // Build the query with filtering logic
+            $query = DB::table('users')
+                ->leftjoin('courses', 'courses.id', 'users.course')
+                ->leftjoin('campuses', 'campuses.id', 'users.campusid')
+                ->select('users.name', 'users.mobile', 'users.email', 'users.balance', 'campuses.campusname', 'courses.course_name')
+                ->where('roleid', 3);
+
+            // Apply filters based on the request
+            if ($campus) {
+                $query->where('users.campusid', $campus);
+            }
+            if ($faculty) {
+                $query->where('courses.field_id', $faculty);
+            }
+            if ($course) {
+                $query->where('users.course', $course);
+            }
+            if ($studentname) {
+                $query->where('users.name', 'like', '%' . $studentname . '%');
+            }
+            if ($regdate) {
+                $query->wheredate('users.created_at', '>=', $regdate);
+            }
+            if ($completion) {
+                $query->wheredate('users.completion', '>=', $completion);
+            }
+
+            // Fetch filtered users
+            $users = $query->get();
+
+            // Write filtered data to CSV
             foreach ($users as $user) {
-                // Add a new row with data
                 fputcsv($handle, [
                     $user->name,
                     $user->mobile,
@@ -2027,17 +2100,15 @@ public function updatestudent(Request $request){
                 ]);
             }
 
-            // Close the output stream
             fclose($handle);
         }, 200, [
-                'Content-Type' => 'text/csv',
-                'Content-Disposition' => 'attachment; filename="export.csv"',
-            ]);
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="export.csv"',
+        ]);
 
         return $response;
-        return redirect()->back();
-    
     }
+
 
 
      public function studentfees(Request $request){
