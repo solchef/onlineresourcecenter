@@ -676,26 +676,41 @@ class HomeController extends Controller
     }
         
     public function viewassignments(Request $request){
-      $this->setLocale();
-
+        $this->setLocale();
+    
         $unitfilter = $request->input('units');
-
         $today = Carbon::now()->toDateTimeString();
-
-        $units = DB::table('course_units')->where('course_id',Auth::user()->course)->get();
-
-
+    
+        // Get the user's total payable and paid amount
+        $payable = Auth::user()->payable;
+        $paid = Auth::user()->paid;
+    
+        // Calculate the payment percentage
+        $payment_percentage = ($paid / $payable) * 100;
+    
+        // Get the course units
+        $units = DB::table('course_units')->where('course_id', Auth::user()->course)->get();
+    
+        // Get the assignments
         $assignments = DB::table('assignment')
-       // ->leftjoin('course_units','course_id','assignment.enrolled_course')
-         ->select('assignment.*')
-        ->where('enrolled_course',Auth::user()->course)
-        // ->where('course_units.id',$unitfilter)
-        ->paginate(6);
-
-    //dd($assignments);
-   
-        return view('adminviews.viewassignments',compact('assignments','today','units'));
+            ->select('assignment.*')
+            ->where('enrolled_course', Auth::user()->course)
+            ->paginate(12);
+    
+        // Add locked/unlocked status based on payment percentage
+        foreach ($assignments as $key => $assignment) {
+            // Unlock the assignment based on payment progress
+            $unlockThreshold = ($key + 1) * (100 / count($assignments)); // Dynamically calculate thresholds for unlocking
+            if ($payment_percentage >= $unlockThreshold) {
+                $assignment->status = 'unlocked';
+            } else {
+                $assignment->status = 'locked';
+            }
+        }
+        
+        return view('adminviews.viewassignments', compact('assignments', 'today', 'units'));
     }
+    
 
     //download status
     public function downloadstatus(Request $request,$id){

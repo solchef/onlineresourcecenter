@@ -32,7 +32,7 @@
 
                                                     <button style="width:100%; text-align:left;"
                                                         value="{{ asset('coursenotes') }}/{{ $nts->notes }}"
-                                                        id="course_notes" class="btn-full btn btn-xs btn-primary">
+                                                        id="course_notes" class="btn-full btn btn-xs {{ $nts->status === 'unlocked' ? 'btn-primary' : 'btn-warning' }}">
                                                         <span>
                                                             @if ($nts->status === 'unlocked')
                                                                 <i class="fa fa-unlock"></i>
