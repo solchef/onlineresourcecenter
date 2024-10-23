@@ -29,8 +29,8 @@ Route::get('/about', function(){
 
 });
 
-Route::get('/test',function(){
-		return view('test');
+Route::get('/user-login',function(){
+		return view('auth.login');
 });
 
 

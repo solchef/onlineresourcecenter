@@ -30,7 +30,7 @@
 				<!-- Button for smallest screens -->
 				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
 				<a class="navbar-brand" href="index.html">
-					<img src="elerningtheme/images/logo.png" alt="Techro HTML5 template"></a>
+					<img src="elerningtheme/images/logo.png" alt="Online Resource Center"></a>
 			</div>
 			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav pull-right mainNav">
@@ -38,7 +38,7 @@
 					<li><a href="#about">About</a></li>
 					<li><a href="#courses">Courses</a></li>
 
-					<li><a href="{{url('login')}}">Portal Login</a></li>
+					<li><a href="/user-login">Portal Login</a></li>
 
 				</ul>
 			</div>
@@ -256,7 +256,7 @@
 								{{-- <a href="#">Home</a> | 
 								<a href="#">About</a> | --}}
 							
-								<a href="{{ url('login')}}">Portal Login</a>
+								<a href="/user-login">Portal Login</a>
 							</p>
 						</div>
 					</div>
