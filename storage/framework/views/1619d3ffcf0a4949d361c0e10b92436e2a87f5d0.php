@@ -1,9 +1,7 @@
 <div class="footer">
-    <div class="pull-right">
-        Powered by <a href="http://www.blancorp.co.ke">Blancorp Solutions</a>
-    </div>
+    
     <div>
-        <strong>2022 &copy; ONLINE RESOURCE CENTER<a href="http://www.decasys.co.ke"> Need any Help?</a></strong>
+        <strong>2022 &copy; ONLINE RESOURCE CENTER<a href="https://capacityafrica.com"> Need any Help?</a></strong>
     </div>
 </div>
 
