@@ -257,7 +257,7 @@
 					<div class="col-md-6 panel">
 						<div class="panel-body">
 							<p class="text-right">
-								Copyright &copy; 2024. Powered By <a href="http://payflares.com/" target="_blank" rel="develop">Decasys Solutions</a>
+								Copyright &copy; 2024. Online Resource Center
 							</p>
 						</div>
 					</div>
